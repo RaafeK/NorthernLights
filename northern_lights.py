@@ -56,6 +56,6 @@ def storm_notification(data):
             send_sms(get_twilio(), notification)
 
 
-if __name__ == "__main__":
-    data = get_noaa()
-    storm_notification(data)
+# if __name__ == "__main__":
+#     data = get_noaa()
+#     storm_notification(data)
