@@ -8,6 +8,9 @@ import os
 
 load_dotenv(find_dotenv())
 
+global SEND_NOSTORM_TEXT
+SEND_NOSTORM_TEXT = False
+
 
 def get_twilio():
     """Get a twilio client"""
@@ -47,14 +50,15 @@ def get_noaa():
 def storm_notification(data):
     geostorm = data.loc[data['kP'] >= 4]
     if not geostorm.empty:
-        notification = "NOAA data is predicting a high kP values at the following times:\n"
+        notification = "NOAA data is predicting high kP values at the following times:\n"
         storms = 0
         for _, row in geostorm.iterrows():
             notification += "{time} CST: \t{}kP".format( str(row['kP']), time=str(row['time (CST)']))
             storms += 1
         if storms:
             send_sms(get_twilio(), notification)
-
+    elif SEND_NOSTORM_TEXT:
+        send_sms(get_twilio(), "No high kP values are predicted for the upcoming days")
 
 if __name__ == "__main__":
     data = get_noaa()
