@@ -48,12 +48,12 @@ def get_noaa():
 
 
 def storm_notification(data):
-    geostorm = data.loc[data['kP'] >= 4]
+    geostorm = data.loc[data['kP'] >= 5]
     if not geostorm.empty:
         notification = "NOAA data is predicting high kP values at the following times:\n"
         storms = 0
         for _, row in geostorm.iterrows():
-            notification += "{time} CST: \t{}kP".format( str(row['kP']), time=str(row['time (CST)']))
+            notification += "{time} CST: \t{}kP\n".format( str(row['kP']), time=str(row['time (CST)']))
             storms += 1
         if storms:
             send_sms(get_twilio(), notification)
